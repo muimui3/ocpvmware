@@ -1,0 +1,9 @@
+
+- hosts: kvmhost
+  vars_prompt:
+  
+    - name: "remove_vcenter"
+      prompt: "Do you want to remove vCenter and all the VM's (yes/no)? "
+      private: no
+  roles:
+    - clean_localhost

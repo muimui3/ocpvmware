@@ -1,0 +1,11 @@
+---
+# defaults file for upload_ocp_template
+
+tmp_space: "/tmp/ocp4"
+ocp_ova: "rhcos-4.1.0-x86_64-vmware.ova"
+ocp_ova_url: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.1/latest/{{ ocp_ova  }}"
+
+govc_username: "{{ vcenter_username }}" # overrides GOVC_USERNAME
+govc_password: "{{ vcenter_password }}" # overrides GOVC_PASSWORD
+govc_url: "https://{{ vcenter_ip }}/sdk"
+govc_insecure: 1

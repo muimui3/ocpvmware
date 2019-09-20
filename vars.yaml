@@ -1,0 +1,166 @@
+# This can be downlaod from RedHat OpensShift 
+pullsecret:  'GET YOUR OWN FROM https://cloud.redhat.com/openshift/install'
+base_domain: "os.fisc.lab"
+base_domain_prefix: "dev"
+
+# Vmware information 
+
+target_esxi_ip: "100.106.aa.bb"
+target_esxi_username: "root"
+target_esxi_password: "XYZ"
+target_esx_datastore: "datastore1"
+target_esx_portgroup: "vmportgroup"
+
+vcenter_iso_name: "VMware-VCSA-all-6.7.0-13010631"
+vcenter_username: "Administrator@vsphere.local"
+vcenter_password: "passw0rd"
+vcenter_ip: "100.106.11.196"
+vcenter_datacenter: "DC"
+vcenter_cluster: "ocp4"
+
+
+
+#Portable IP information Address IBM Cloud for Gov
+portable:
+  subnet: "100.106.11.192/27"
+  gateway: "100.106.11.193"
+  netmask: "255.255.255.224"
+  prefix: "27"
+  # Hint its the last IP address of portable pool. You can obtain this on portable Ip address page
+  broadcast: "100.106.11.223"
+  # Hint its the first IP address of portable pool. You can obtain this on portable Ip address page
+  network: "100.106.11.192" 
+  # These IP address are default DNS server in IC4G  
+  dns1: "100.100.100.80"
+  dns2: "100.100.100.81"
+  
+# Helper Node which will act as 
+# DNS,Load balancer, WebServer, DHCP, PXE, TFTP, NFSv4 and Basetion Host
+helpernode_IP: "100.106.11.199" 
+
+
+
+# Pool of IP address which can be obtain from portable IP address. 
+# minimum 7 IP address should be assiged from the pool of portable IP address. These address will be used for Master, Worker and BootStrap nodes. 
+
+portable_pool_start_ip: "100.106.11.209"
+portable_pool_end_ip: "100.106.11.222"
+  
+
+# Bootstrap IP address (OCS requirments) should be part of the pool IP address 
+bootstrap_ip: "100.106.11.210"
+
+# Master IP address. By default OCS requires 3 master nodes
+
+master_ip:
+   0: "100.106.11.211"
+   1: "100.106.11.212"
+   2: "100.106.11.213"
+
+
+# Worker IP address
+worker_ip:
+   0: "100.106.11.218"
+   1: "100.106.11.219"
+   2: "100.106.11.220"
+
+
+
+
+
+
+###############################################################################################################
+#Beyond this point please edit on your own risk
+# The section below in for advance users
+###############################################################################################################
+# you can point to either redhat or centos image
+helpernode_hostname: "helper"
+helper_node_image: "CentOS-7-x86_64-DVD-1810.iso"
+helper_node_image_url: "http://mirror.cs.vt.edu/pub/CentOS/7.6.1810/isos/x86_64"
+helper_node_image_uncompressed_name: "{{ CentOS-7-x86_64-DVD-1810.iso }}"
+
+
+
+
+
+# Libvirt image directory
+libvirt_image_directory: "/var/lib/libvirt/images" 
+#KVM network name
+kvm_network_name: "openshift4"
+
+
+
+kvm_vm_hostname: "{{helpernode_hostname}}.{{base_domain_prefix}}.{{base_domain}}"
+kvm_vm_public_ip: "{{ helpernode_IP }}"
+kvm_vm_root_pwd: "passw0rd"
+kvm_vm_base_img: "{{ helper_node_image_uncompressed_name }}"
+kvm_vm_vcpus: "4"
+kvm_vm_ram: "16384"
+kvm_vm_os_disk_name: "{{ kvm_vm_hostname }}"
+kvm_vm_os_disk_size: "150G"
+kvm_vm_nics:
+  - name: ens32
+    bootproto: static
+    onboot: yes
+    ip: "{{ helpernode_IP }}"
+    prefix: "{{ portable.prefix }}"
+    gateway: "{{ portable.gateway }}"
+    dns_server: "{{ portable.dns1 }}"
+    config: "--type network --source {{ kvm_network_name }} --model virtio"
+
+
+
+kvm_timezone: "America/New_York"
+
+disk: vda
+
+helper:
+  name: "{{ helpernode_hostname }}"
+  ipaddr: "{{ helpernode_IP }}"
+  networkifacename: "eth0"
+dns:
+  domain: "{{ base_domain }}"
+  clusterid: "{{base_domain_prefix }}"
+  forwarder1: "{{ portable.dns1 }}"
+  forwarder2: "{{ portable.dns2 }}"
+
+dhcp:
+  router: "{{ portable.gateway }}"
+  bcast: "{{ portable.broadcast }}"
+  netmask: "{{ portable.netmask }}"
+  poolstart: "{{ portable_pool_start_ip }}"
+  poolend: "{{ portable_pool_end_ip }}"
+  ipid: "{{ portable.network }}"
+  netmaskid: "{{ portable.netmask }}"
+
+bootstrap:
+  name: "bootstrap"
+  ipaddr: "{{ bootstrap_ip }}"
+  macaddr: "{{ hostvars['localhost']['bootstrap_mac']  }}"
+
+
+masters:
+  - name: "control-plane-0"
+    ipaddr: "{{ master_ip.0 }}"
+    macaddr: "{{ hostvars['localhost']['master_mac_0']  }}"
+  - name: "control-plane-1"
+    ipaddr: "{{ master_ip.1 }}"
+    macaddr: "{{ hostvars['localhost']['master_mac_1']  }}"
+  - name: "control-plane-2"
+    ipaddr: "{{ master_ip.2 }}"
+    macaddr: "{{ hostvars['localhost']['master_mac_2'] }}"
+
+
+workers:
+  - name: "compute-0"
+    ipaddr: "{{ worker_ip.0 }}"
+    macaddr: "{{ hostvars['localhost']['worker_mac_0'] }}"
+  - name: "compute-1"
+    ipaddr: "{{ worker_ip.1 }}"
+    macaddr: "{{ hostvars['localhost']['worker_mac_1'] }}"
+  - name: "compute-2"
+    ipaddr: "{{ worker_ip.2 }}"
+    macaddr: "{{ hostvars['localhost']['worker_mac_2'] }}"
+
+
+

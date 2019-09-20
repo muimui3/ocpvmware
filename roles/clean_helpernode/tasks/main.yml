@@ -1,0 +1,36 @@
+---
+# tasks file for clean
+- name: Run Terraform command
+  command: terraform init
+  args:
+    chdir: /opt/ocp4/installer/upi/vsphere
+  ignore_errors: True
+  
+- name: Run Terraform command
+  command: terraform destroy -auto-approve
+  args:
+    chdir: /opt/ocp4/installer/upi/vsphere
+  ignore_errors: True
+
+
+
+
+- name: Remove a virtual machine by name
+  vmware_guest:
+    hostname: "{{ vcenter_ip }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    name: "{{ item }}"
+    state: absent
+    force: yes
+  loop:
+    
+     - helper
+     - rhcos-latest
+  delegate_to: localhost
+  
+
+
+
+

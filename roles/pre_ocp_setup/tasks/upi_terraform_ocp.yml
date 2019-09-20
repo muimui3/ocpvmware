@@ -1,0 +1,62 @@
+- name: install the latest version of Unzip
+  yum:
+    name: unzip
+    state: latest
+- name:  copying installer folder
+  copy:
+    src: "{{role_path}}/files/installer"
+    dest: /opt/ocp4/
+
+- name: Write out  file terraform.tfvars
+  template:
+    src: "{{ role_path }}/templates/terraform.tfvars.j2"
+    dest: /opt/ocp4/installer/upi/vsphere/terraform.tfvars
+
+- name: Write out  file variables.tf
+  template:
+    src: "{{ role_path }}/templates/variables.tf.j2"
+    dest: /opt/ocp4/installer/upi/vsphere/variables.tf
+
+
+- name: Write out  file main.tf
+  template:
+    src: "{{ role_path }}/templates/main.tf.j2"
+    dest: /opt/ocp4/installer/upi/vsphere/main.tf
+
+
+- name: Write out  file ignition.rf
+  template:
+    src: "{{ role_path }}/templates/ignition.tf.j2"
+    dest: /opt/ocp4/installer/upi/vsphere/machine/ignition.tf
+
+- name: Dowloading Terraform Installer
+  get_url:
+    url: "{{ ocp_terraform }}"
+    dest: /usr/local/src/terraform_0.11.14_linux_amd64.zip
+
+
+- name: Unarchiving Terrafrom Installer
+  unarchive:
+    src: /usr/local/src/terraform_0.11.14_linux_amd64.zip
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Check Terraform downlaod
+  command: terraform -v
+
+
+- name: Run Terraform command 
+  command: terraform init
+  args:
+    chdir: /opt/ocp4/installer/upi/vsphere
+
+
+- name: Run Terraform command 
+  command: terraform plan
+  args:
+    chdir: /opt/ocp4/installer/upi/vsphere
+
+- name: Run Terraform command
+  command: terraform apply -auto-approve
+  args:
+    chdir: /opt/ocp4/installer/upi/vsphere

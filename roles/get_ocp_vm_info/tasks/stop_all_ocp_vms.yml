@@ -1,0 +1,77 @@
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest:
+     hostname: "{{ vcenter_ip }}"
+     username: "{{ vcenter_username }}"
+     password: "{{ vcenter_password }}"
+     validate_certs: no
+     name: bootstrap-0
+     state: poweredoff
+  delegate_to: localhost
+  register: deploy
+  
+  
+  
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest:
+     hostname: "{{ vcenter_ip }}"
+     username: "{{ vcenter_username }}"
+     password: "{{ vcenter_password }}"
+     validate_certs: no
+     name: compute-0
+     state: poweredoff
+  delegate_to: localhost
+  register: deploy
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest:
+     hostname: "{{ vcenter_ip }}"
+     username: "{{ vcenter_username }}"
+     password: "{{ vcenter_password }}"
+     validate_certs: no
+     name: compute-1
+     state: poweredoff
+  delegate_to: localhost
+  register: deploy
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest:
+     hostname: "{{ vcenter_ip }}"
+     username: "{{ vcenter_username }}"
+     password: "{{ vcenter_password }}"
+     validate_certs: no
+     name: compute-2
+     state: poweredoff
+  delegate_to: localhost
+  register: deploy
+
+
+
+
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest:
+     hostname: "{{ vcenter_ip }}"
+     username: "{{ vcenter_username }}"
+     password: "{{ vcenter_password }}"
+     validate_certs: no
+     name: control-plane-0
+     state: poweredoff
+  delegate_to: localhost
+  register: deploy
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest:
+     hostname: "{{ vcenter_ip }}"
+     username: "{{ vcenter_username }}"
+     password: "{{ vcenter_password }}"
+     validate_certs: no
+     name: control-plane-1
+     state: poweredoff
+  delegate_to: localhost
+  register: deploy
+- name: Set the state of a virtual machine to poweroff
+  vmware_guest:
+     hostname: "{{ vcenter_ip }}"
+     username: "{{ vcenter_username }}"
+     password: "{{ vcenter_password }}"
+     validate_certs: no
+     name: control-plane-2
+     state: poweredoff
+  delegate_to: localhost
+  register: deploy

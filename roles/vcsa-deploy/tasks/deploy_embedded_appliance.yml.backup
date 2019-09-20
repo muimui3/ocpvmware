@@ -1,0 +1,46 @@
+---
+# Using the ovftool binary, deploys the required appliance(s)
+# The failed_when property is used to capture both soft failures ("Monitor failed:") and hard
+#  failures (return code > 0)
+# - include_vars: vault.yml
+
+- name: Deploy the vCenter appliance with embedded PSC
+  command: >
+    /opt/repo/mnt/vcsa/ovftool/lin64/ovftool
+    --acceptAllEulas
+    --noSSLVerify
+    --X:injectOvfEnv
+    --allowExtraConfig
+    --X:enableHiddenProperties
+    --X:waitForIp
+    --X:connectionFileTransferRetryCount=3
+    --sourceType=OVA
+    --powerOn
+    --net:"Network 1"='vmportgroup'
+    --datastore='datastore1'
+    --diskMode='thin'
+    --deploymentOption="small"
+    --prop:guestinfo.cis.appliance.root.shell=/bin/bash
+    --prop:guestinfo.cis.deployment.autoconfig=True
+    --prop:guestinfo.cis.silentinstall=False
+    --prop:guestinfo.cis.vmdir.domain-name="vsphere.local"
+    --prop:guestinfo.cis.vmdir.site-name="Default-Site"
+    --prop:guestinfo.cis.vmdir.username="administrator@vsphere.local"
+    --prop:guestinfo.cis.vmdir.password="passw0rd"
+    --prop:guestinfo.cis.appliance.net.addr.family="ipv4"
+    --prop:guestinfo.cis.appliance.root.passwd="passw0rd"
+    --prop:guestinfo.cis.appliance.ssh.enabled="True"
+    --prop:guestinfo.cis.vmdir.first-instance=True
+    --prop:guestinfo.cis.ceip_enabled=True
+    --prop:guestinfo.cis.appliance.ntp.servers='132.163.97.1,132.163.96.1'
+      --name='vcenter'
+    --prop:guestinfo.cis.appliance.net.pnid="100.106.11.196"
+    --prop:guestinfo.cis.appliance.net.mode="static"
+    --prop:guestinfo.cis.appliance.net.addr="100.106.11.196"
+    --prop:guestinfo.cis.appliance.net.prefix="27"
+    --prop:guestinfo.cis.appliance.net.gateway="100.106.11.193"
+    --prop:guestinfo.cis.appliance.net.dns.servers='100.100.100.80'
+      '/opt/repo/mnt/vcsa/VMware-vCenter-Server-Appliance-6.7.0.30000-13010631_OVF10.ova'
+    vi://"root":"QuKWea82"@100.106.55.204/
+  register: deploy_ovf_cmd_result
+  ignore_errors: True

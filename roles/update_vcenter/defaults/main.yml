@@ -1,0 +1,10 @@
+---
+# defaults file for update_vcenter
+
+datacenter_name: "{{ vcenter_datacenter }}"
+
+cluster_name: "{{ vcenter_cluster }}"
+
+vcenter_username: "{{ vcenter_username }}"
+
+vcenter_hostname: "{{ vcenter_ip }}"

@@ -1,0 +1,9 @@
+- hosts: kvmhost
+  vars_prompt:
+  
+    - name: "install_vcenter"
+      prompt: "Do you want to install vCenter (yes/no)?  If yes, please make sure you downloaded the VCSA ISO from VMware website before executing this task."
+      private: no
+  roles:
+    - vcsa-deploy
+

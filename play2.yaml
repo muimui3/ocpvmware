@@ -1,0 +1,13 @@
+- hosts: kvmhost
+  roles:
+    - update_vcenter
+    - create_helper_vm
+    - upload_ocp_template
+    
+
+    
+- hosts: kvmguest
+  roles:
+     - pre_ocp_setup
+   
+

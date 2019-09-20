@@ -1,0 +1,10 @@
+- hosts: kvmhost
+  roles:
+    - get_ocp_vm_info   
+
+    
+- hosts: kvmguest
+  roles:
+     - update_helper_vm
+   
+

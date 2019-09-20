@@ -1,0 +1,39 @@
+---
+
+
+  - name: ansible create directory with mode setting  iso
+    file:
+      path: "{{tmp_space}}"
+      state: directory
+      mode: "u=rw,g=wx,o=rwx"
+
+ 
+
+  - name: Check if ocp ova already fetched
+    stat:
+      path: "{{ tmp_space }}/{{ ocp_ova }}"
+    register: ova_install
+
+  - name: Download OCP4.1 installation ova file (might take a while)
+    get_url:
+      url: "{{ ocp_ova_url }}"
+      dest: "{{ tmp_space }}/{{ ocp_ova }}"
+      mode: 0440
+    when: ova_install.stat.exists == False
+    register: myovafile
+
+
+
+  - name: Eject CDROM device "{{ cdrom1.stdout }}"
+      command: govc import.ova -name=rhcos-latest "{{ tmp_space }}/{{ ocp_ova }}"
+      environment:
+       GOVC_USERNAME: "{{ govc_username | default(ansible_env.GOVC_USERNAME) }}"
+       GOVC_PASSWORD: "{{ govc_password | default(ansible_env.GOVC_PASSWORD) }}"
+       GOVC_URL: "{{ govc_url | default(ansible_env.GOVC_URL) }}"
+       GOVC_INSECURE: 1
+
+  
+
+  
+
+  

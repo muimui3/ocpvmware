@@ -1,0 +1,80 @@
+---
+# tasks file for get_ocp_vw_info
+
+
+- name: Get UUID from given VM Name
+  vmware_vm_facts:
+    hostname: '{{ vcenter_ip }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    vm_type: vm
+    validate_certs: no
+    show_attribute: yes
+  delegate_to: localhost
+  register: vm_facts
+  
+- set_fact:
+    worker_mac_0: "{{vm_facts.virtual_machines | json_query(query) }}"
+  vars: 
+    query: "[?guest_name == 'compute-0'].mac_address[] | [0]"
+
+- debug:
+    msg: System {{ worker_mac_0 }} worker_mac_0 
+
+
+- set_fact:
+    worker_mac_1: "{{vm_facts.virtual_machines | json_query(query) }}"
+  vars: 
+    query: "[?guest_name == 'compute-1'].mac_address[] | [0]"
+
+- debug:
+    msg: System {{ worker_mac_1 }} worker_mac_1
+    
+    
+- set_fact:
+    worker_mac_2: "{{vm_facts.virtual_machines | json_query(query) }}"
+  vars: 
+    query: "[?guest_name == 'compute-2'].mac_address[] | [0]"
+
+- debug:
+    msg: System {{ worker_mac_2 }} worker_mac_2
+
+################################
+# control-plane-0
+##################################
+
+- set_fact:
+    master_mac_0: "{{vm_facts.virtual_machines | json_query(query) }}"
+  vars: 
+    query: "[?guest_name == 'control-plane-0'].mac_address[] | [0]"
+
+- debug:
+    msg: System {{ master_mac_0 }} control-plane-0
+
+- set_fact:
+    master_mac_1: "{{vm_facts.virtual_machines | json_query(query) }}"
+  vars: 
+    query: "[?guest_name == 'control-plane-1'].mac_address[] | [0]"
+
+- debug:
+    msg: System {{ master_mac_1 }} control-plane-1
+
+- set_fact:
+    master_mac_2: "{{vm_facts.virtual_machines | json_query(query) }}"
+  vars: 
+    query: "[?guest_name == 'control-plane-2'].mac_address[] | [0]"
+
+- debug:
+    msg: System {{ master_mac_2 }} control-plane-2
+    
+
+- set_fact:
+    bootstrap_mac: "{{vm_facts.virtual_machines | json_query(query) }}"
+  vars: 
+    query: "[?guest_name == 'bootstrap-0'].mac_address[] | [0]"
+
+- debug:
+    msg: System {{ bootstrap_mac }} bootstrap-0
+
+    
+    

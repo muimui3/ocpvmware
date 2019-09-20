@@ -1,0 +1,15 @@
+apiVersion: v1
+baseDomain: "{{ base_domain }}"
+metadata:
+  name: "{{ base_domain_prefix }}"
+networking:
+  machineCIDR: "{{ portable.subnet }}"
+platform:
+ vsphere:
+  vCenter: "{{ vcenter_ip }}"
+  username: "{{ vcenter_username }}"
+  password: "{{ vcenter_password }}"
+  datacenter: "{{ vcenter_datacenter }}"
+  defaultDatastore: "{{ target_esx_datastore }}"
+pullSecret: '{{ pullsecret }}'
+sshKey: '{{ new_rsa_key['content'] | b64decode  }}'

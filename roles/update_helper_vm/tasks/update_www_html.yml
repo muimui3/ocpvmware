@@ -1,0 +1,31 @@
+- name: copy the ignition files to http server location
+  copy:
+    src: /opt/ocp4/{{item}} 
+    dest: /var/www/html/ignition/
+    remote_src: yes
+  with_items: 
+    ['bootstrap.ign' ]
+
+- name: restocon command on http server
+  command: restorecon -vR /var/www/html/
+  
+  
+  
+- name: Start a virtual machines by name
+  vmware_guest:
+    hostname: "{{ vcenter_ip }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    name: "{{ item }}"
+    state: poweredon
+    force: yes
+  loop:
+     - compute-0
+     - compute-1
+     - compute-2
+     - control-plane-0
+     - control-plane-1
+     - control-plane-2
+     - bootstrap-0     
+  delegate_to: localhost

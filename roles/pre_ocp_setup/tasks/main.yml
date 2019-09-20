@@ -1,0 +1,2 @@
+- include: create_ignition_files.yml
+- include: upi_terraform_ocp.yml

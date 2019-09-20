@@ -1,0 +1,61 @@
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+---
+# defaults file for vcsa-deploy
+
+# Prereqs.yml variables
+repo_dir: "/opt/repo"
+vcsa_iso: "{{ vcenter_iso_name }}.iso"
+vcsa_task_directory: "{{ role_path }}/tasks"
+
+ovftool: "{{ repo_dir }}/mnt/vcsa/ovftool/lin64/ovftool"
+vcsa_ova: "{{ vcenter_iso_name}}.ova"
+mount_dir_path: "{{ repo_dir }}/mnt"
+
+appliance_type: "embedded"
+
+# deploy.yml and deploy_appliance.yml variables
+network_ip_scheme: static
+disk_mode: "thin"
+
+vcenter_appliance_name: "vcenter"
+vcenter_appliance_size: "small"
+
+target_esx_datastore: "vsanDatastore"
+target_esx_portgroup: "Management"
+
+ssh_enable: true
+time_tools_sync: false
+net_addr_family: "ipv4"
+
+vcenter_password: "{{ vcenter_password }}"
+vcenter_fqdn: "{{  vcenter_ip }}"
+vcenter_ip_address: "{{  vcenter_ip }}"
+vcenter_netmask: "{{ portable.netmask }}"
+vcenter_gateway: "{{ portable.gateway }}"
+vcenter_net_prefix: "{{ portable.prefix }}"
+
+dns_servers:
+  - "{{ portable.dns1 }}"
+ntp_servers:
+  - 132.163.97.1
+  - 132.163.96.1
+
+target_esxi: "{{ target_esxi_ip }}"
+target_esxi_username: "{{ vault_esxi_username }}"
+target_esxi_password: "{{ vault_esxi_password }}"
+
+sso_password: "{{ vcenter_password }}"
+sso_site_name: "Default-Site"
+sso_domain_name: "vsphere.local"

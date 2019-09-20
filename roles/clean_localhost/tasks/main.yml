@@ -1,0 +1,84 @@
+---
+# tasks file for clean
+
+- name: delete tmp folder
+  shell: "rm -rf /tmp/*"
+
+
+- name: delete knows_host
+  shell: "rm -rf /root/.ssh/known_hosts"
+    
+
+
+
+- name: Remove a virtual machine by name
+  vmware_guest:
+    hostname: "{{ vcenter_ip }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    name: "{{ item }}"
+    state: absent
+    force: yes
+  loop:
+     - compute-0
+     - compute-1
+     - compute-2
+     - control-plane-0
+     - control-plane-1
+     - control-plane-2
+     - helper
+     - rhcos-latest
+     - bootstrap-0
+  when: remove_vcenter | bool
+  delegate_to: localhost
+  
+- name: remove resource pool to vCenter
+  vmware_resource_pool:
+    hostname: '{{ vcenter_ip }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ vcenter_datacenter }}'
+    cluster: '{{ vcenter_cluster }}'
+    validate_certs: no
+    resource_pool: '{{base_domain_prefix}}'
+    state: absent
+  delegate_to: localhost
+
+#- name: Remove ESXi Host to vCenter
+#  vmware_host:
+#    hostname: '{{ vcenter_ip }}'
+#    username: '{{ vcenter_username }}'
+#    password: '{{ vcenter_password }}'
+#    datacenter: '{{ vcenter_datacenter }}'
+#    validate_certs: no
+#    cluster: '{{ vcenter_cluster }}'
+#    esxi_hostname: '{{ target_esxi_ip }}'
+#    esxi_username: '{{ target_esxi_username }}'
+#    esxi_password: '{{ target_esxi_password }}'
+#    state: absent
+#  when: remove_vcenter | bool  
+#  delegate_to: localhost
+
+- name: Remove a virtual machine by name
+  vmware_guest:
+    hostname: "{{ target_esxi_ip }}"
+    username: "{{ target_esxi_username }}"
+    password: "{{ target_esxi_password }}"
+    validate_certs: no
+    name: "{{ item }}"
+    state: absent
+    force: yes
+  loop:
+     - helper
+     - vcenter
+     
+  when: remove_vcenter | bool
+  delegate_to: localhost
+  
+  
+  
+
+
+
+

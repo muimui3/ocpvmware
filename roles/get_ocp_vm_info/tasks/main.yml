@@ -1,0 +1,2 @@
+- include: get_mac_address.yml
+- include: stop_all_ocp_vms.yml
