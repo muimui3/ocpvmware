@@ -146,15 +146,15 @@
       delegate_to: localhost
       register: started
 
-#    - name:  Pause the script till VM is deployed
-#      pause:
-#        prompt: "*****************************************/n Validade Helper-node is deployed through ESXi or vCenter server. /n Press Enter key once verified /n ******************************************************"
-    - name: Waits for port 22 of any IP to close active connections, don't start checking for 10 seconds
-      wait_for:
-        host: "{{ helpernode_IP }}"
-        port: 22
-        delay: 600
-        state: started
+    - name:  Pause the script till VM is deployed
+      pause:
+        prompt: "*****************************************/n Validade Helper-node is deployed through ESXi or vCenter server. /n Press Enter key once verified /n ******************************************************"
+#    - name: Waits for port 22 of any IP to close active connections, don't start checking for 10 seconds
+#      wait_for:
+#        host: "{{ helpernode_IP }}"
+#        port: 22
+#        delay: 1200
+#        state: started
     
     - name: Wait for VMware tools to become available
       vmware_guest_tools_wait:
