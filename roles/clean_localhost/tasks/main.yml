@@ -33,7 +33,7 @@
      - control-plane-2
      - helper
      - rhcos-latest
-     - "{{ bootstrap.name }}"
+     - bootstrap-0
   when: remove_vcenter | bool
   delegate_to: localhost
   
