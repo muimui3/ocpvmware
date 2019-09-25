@@ -45,18 +45,25 @@
   command: terraform -v
 
 
-- name: Run Terraform command 
-  command: terraform init
-  args:
-    chdir: /opt/ocp4/installer/upi/vsphere
+#- name: Run Terraform command 
+#  command: terraform init
+#  args:
+#    chdir: /opt/ocp4/installer/upi/vsphere
 
 
-- name: Run Terraform command 
-  command: terraform plan
-  args:
-    chdir: /opt/ocp4/installer/upi/vsphere
+#- name: Run Terraform command 
+#  command: terraform plan
+#  args:
+#    chdir: /opt/ocp4/installer/upi/vsphere
 
-- name: Run Terraform command
-  command: terraform apply -auto-approve
-  args:
-    chdir: /opt/ocp4/installer/upi/vsphere
+#- name: Run Terraform command
+#  command: terraform apply -auto-approve
+#  args:
+#    chdir: /opt/ocp4/installer/upi/vsphere
+
+
+- name: Deploy OCP using Terraform 
+  terraform:
+    project_path: /opt/ocp4/installer/upi/vsphere
+    force_init: yes
+    state: present

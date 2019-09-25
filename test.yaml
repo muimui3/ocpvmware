@@ -1,0 +1,4 @@
+- hosts: kvmguest
+  roles:
+     - pre_ocp_setup
+   

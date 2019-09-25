@@ -34,7 +34,7 @@ services --enabled="chronyd"
 # Do not configure the X Window System
 skipx
 # System timezone
-timezone Etc/UTC --isUtc
+timezone {{ kvm_timezone }} --ntpservers=0.us.pool.ntp.org
 # System bootloader configuration
 bootloader --location=mbr --boot-drive=sda
 autopart --type=lvm

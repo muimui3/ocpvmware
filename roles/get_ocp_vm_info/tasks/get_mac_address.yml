@@ -74,7 +74,7 @@
     query: "[?guest_name == 'bootstrap-0'].mac_address[] | [0]"
 
 - debug:
-    msg: System {{ bootstrap_mac }} bootstrap-0
+    msg: System {{ bootstrap_mac }} {{ bootstrap.name }}
 
     
     

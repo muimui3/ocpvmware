@@ -4,7 +4,7 @@
      username: "{{ vcenter_username }}"
      password: "{{ vcenter_password }}"
      validate_certs: no
-     name: bootstrap-0
+     name: "{{ bootstrap.name }}"
      state: poweredoff
   delegate_to: localhost
   register: deploy

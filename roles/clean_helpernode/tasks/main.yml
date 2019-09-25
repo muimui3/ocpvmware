@@ -1,5 +1,12 @@
 ---
 # tasks file for clean
+
+- name: Deploy OCP using Terraform 
+  terraform:
+    project_path: /opt/ocp4/installer/upi/vsphere
+    state: absent
+    lock: false
+
 - name: Run Terraform command
   command: terraform init
   args:

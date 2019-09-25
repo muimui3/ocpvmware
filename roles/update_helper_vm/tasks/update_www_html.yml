@@ -21,11 +21,11 @@
     state: poweredon
     force: yes
   loop:
-     - compute-0
-     - compute-1
-     - compute-2
-     - control-plane-0
-     - control-plane-1
-     - control-plane-2
-     - bootstrap-0     
+#     - compute-0
+#     - compute-1
+#     - compute-2
+#     - control-plane-0
+#     - control-plane-1
+#     - control-plane-2
+     - "{{ bootstrap.name }}"     
   delegate_to: localhost

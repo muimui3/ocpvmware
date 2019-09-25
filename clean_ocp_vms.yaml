@@ -1,11 +1,12 @@
+
+
+- hosts: kvmguest
+  roles:
+    - clean_helpernode
+
 - hosts: kvmhost
   vars:
     remove_vcenter: no
     
   roles:
     - clean_localhost
-
-
-- hosts: kvmguest
-  roles:
-    - clean_helpernode

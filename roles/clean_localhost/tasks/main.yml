@@ -4,9 +4,13 @@
 - name: delete tmp folder
   shell: "rm -rf /tmp/*"
 
-
-- name: delete knows_host
-  shell: "rm -rf /root/.ssh/known_hosts"
+- name: Delete known host a file
+  file:
+    path: /root/.ssh/known_hosts
+    state: absent
+    
+#- name: delete knows_host
+#  shell: "rm -rf /root/.ssh/known_hosts"
     
 
 
@@ -29,21 +33,11 @@
      - control-plane-2
      - helper
      - rhcos-latest
-     - bootstrap-0
+     - "{{ bootstrap.name }}"
   when: remove_vcenter | bool
   delegate_to: localhost
   
-- name: remove resource pool to vCenter
-  vmware_resource_pool:
-    hostname: '{{ vcenter_ip }}'
-    username: '{{ vcenter_username }}'
-    password: '{{ vcenter_password }}'
-    datacenter: '{{ vcenter_datacenter }}'
-    cluster: '{{ vcenter_cluster }}'
-    validate_certs: no
-    resource_pool: '{{base_domain_prefix}}'
-    state: absent
-  delegate_to: localhost
+
 
 #- name: Remove ESXi Host to vCenter
 #  vmware_host:
