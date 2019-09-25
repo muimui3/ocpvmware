@@ -12,4 +12,4 @@ platform:
   datacenter: "{{ vcenter_datacenter }}"
   defaultDatastore: "{{ target_esx_datastore }}"
 pullSecret: '{{ pullsecret }}'
-sshKey: '{{ new_rsa_key['content'] | b64decode  }}'
+sshKey: '{{ ocp_rsa_key.public_key }}'
