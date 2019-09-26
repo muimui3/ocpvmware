@@ -33,10 +33,10 @@
     #   set_fact:
     #     centos_iso_remote_stat: "{{ {'size': 0 if centos_iso_remote_stat.rc != 0 else (centos_iso_remote_stat.stdout | from_json)[0].File[0].FileSize} }}"
 
-    - name: Upload "{{ centos_iso }}" to "{{ ds_iso_dir }}/"
+    - name: Upload 
       vsphere_copy:
-        login: "{{ ansible_env.GOVC_USERNAME }}"
-        password: "{{ ansible_env.GOVC_PASSWORD }}"
+        login: "{{ govc_username }}"
+        password: "{{ govc_password }}"
         validate_certs: no
         datacenter: "{{ datacenter }}"
         datastore: "{{ datastore }}"
