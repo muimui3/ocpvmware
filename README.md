@@ -81,7 +81,7 @@ cd /opt/ocpvmware
 > *** HINT *** For Redhat you might have to update the ansible path if playbook can not load python modules
 > In ansible.cfg
 > Under the [defaults]
->interpreter_python = path_to_python
+>interpreter_python = /opt/rh/python27/root/usr/bin/python
 
 Edit the [vars.yaml](./vars.yaml) file with the IP addresss that will be assigned to the masters/workers/boostrap. The IP addresses need to be right since they will be used to create your OpenShift servers.
 
