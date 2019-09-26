@@ -76,9 +76,9 @@ openshift_build: "4.1.16"
 ###############################################################################################################
 # you can point to either redhat or centos image
 helpernode_hostname: "helper"
-helper_node_image: "CentOS-7-x86_64-DVD-1810.iso"
-helper_node_image_url: "http://mirror.cs.vt.edu/pub/CentOS/7.6.1810/isos/x86_64"
-helper_node_image_uncompressed_name: "{{ CentOS-7-x86_64-DVD-1810.iso }}"
+helper_node_image: "CentOS-7-x86_64-DVD-1804.iso"
+helper_node_image_url: "http://repos-lax.psychz.net/centos/7.5.1804/isos/x86_64"
+helper_node_image_uncompressed_name: "{{ CentOS-7-x86_64-DVD-1804.iso }}"
 
 
 
