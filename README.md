@@ -54,6 +54,13 @@ curl -L https://github.com/vmware/govmomi/releases/download/v0.20.0/govc_linux_a
 chmod +x /usr/local/bin/govc
 ```
 
+> ***HINT*** for Redhat server pip install fail
+> # subscription-manager repos --enable rhel-server-rhscl-7-rpms
+> # yum install python27-python-pip
+>$ scl enable python27 bash
+>$ which pip
+>$ pip -V
+
 #### Download vCenter Server Appliance 
 Download the ISO images from [URL](https://my.vmware.com/web/vmware/details?downloadGroup=VC67U2&productId=742&rPId=33237)
 
@@ -71,6 +78,10 @@ cd /opt
 git clone https://github.com/fctoibm/ocpvmware.git
 cd /opt/ocpvmware
 ```
+> *** HINT *** For Redhat you might have to update the ansible path if playbook can not load python modules
+> In ansible.cfg
+> Under the [defaults]
+>interpreter_python = path_to_python
 
 Edit the [vars.yaml](./vars.yaml) file with the IP addresss that will be assigned to the masters/workers/boostrap. The IP addresses need to be right since they will be used to create your OpenShift servers.
 
