@@ -56,8 +56,8 @@ chmod +x /usr/local/bin/govc
 ```
 
 > ***HINT*** for Redhat server pip install fail
-> # subscription-manager repos --enable rhel-server-rhscl-7-rpms
-> # yum install python27-python-pip
+>  subscription-manager repos --enable rhel-server-rhscl-7-rpms
+>  yum install python27-python-pip
 >$ scl enable python27 bash
 >$ which pip
 >$ pip -V
