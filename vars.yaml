@@ -135,7 +135,7 @@ dhcp:
   netmaskid: "{{ portable.netmask }}"
 
 bootstrap:
-  name: "bootstrap"
+  name: "bootstrap-0"
   ipaddr: "{{ bootstrap_ip }}"
   macaddr: "{{ hostvars['localhost']['bootstrap_mac']  }}"
 
