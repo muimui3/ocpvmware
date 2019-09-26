@@ -55,11 +55,16 @@ curl -L https://github.com/vmware/govmomi/releases/download/v0.20.0/govc_linux_a
 chmod +x /usr/local/bin/govc
 ```
 
-> ***HINT*** for Redhat server pip install fail
+> ***HINT*** for Redhat server pip install command wil fail
+
 >  subscription-manager repos --enable rhel-server-rhscl-7-rpms
+
 >  yum install python27-python-pip
+
 >$ scl enable python27 bash
+
 >$ which pip
+
 >$ pip -V
 
 #### Download vCenter Server Appliance 
