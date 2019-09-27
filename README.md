@@ -45,6 +45,7 @@ Before we can use ansible scripts, we have to prep the host with installing ansi
 ```
 sudo yum update
 sudo yum install ansible
+sudo yum install genisoimage
 sudo yum install git
 sudo yum install python-pip gcc make openssl-devel python-devel
 sudo pip install --upgrade ansible
@@ -77,6 +78,15 @@ Update the vcsa_ova variable in vars.yaml file with the downloaded ISO image nam
 Name = vmportgroup
 
 You can follow [URL](https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.html.hostclient.doc/GUID-67415625-FB59-4AE0-9E16-4FB39AEBC50B.html) VMware reference document to create a portgroup. 
+
+#### Update NTP server ESXi
+Connect to your ESXi host via vSphere host client  https://<ESXI_IP>/ui
+
+Then on the left, just bellow the host, select the Manage > System > Time and Date
+
+Update the NTP Server with correct NTP Server address for example 129.6.15.28,129.6.15.28
+
+Then click the Edit Settings button to bring up the configuration window. Set the NTP service startup policy as “Start and stop with host”. Like this everytime the host will reboot, the NTP service will be started automatically.
 
 #### Download the Git repository
 ```
@@ -145,7 +155,7 @@ ansible-playbook -e @vars.yaml  clean_ocp_vms.yaml
 > **HINT** this will delete all the  OCP related VM's and you execute Play2 and Play3 playbook
 
 ```
-ansible-playbook -e @vars.yaml  clean_everthing.yaml
+ansible-playbook -e @vars.yaml  clean_everything.yaml
 ```
 
 > **HINT** this will delete all the VM's and you execute Play1, Play2 and Play3 playbook
