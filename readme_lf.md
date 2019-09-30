@@ -74,15 +74,15 @@ scripts, ansible rpm and python library need to be installed:
 > ***HINT*** for Redhat server pip install command will fail. Need to
 > execute the following commands
 >
-> \$ subscription-manager repos --enable rhel-server-rhscl-7-rpms
+> sudo subscription-manager repos --enable rhel-server-rhscl-7-rpms
 >
-> \$ yum install python27-python-pip
+> sudo yum install python27-python-pip
 >
-> \$ scl enable python27 bash
+> sudo scl enable python27 bash
 >
-> \$ which pip
+> sudo which pip
 >
-> \$ pip -V
+> sudo pip -V
 
 #### Download vCenter Server Appliance
 
@@ -252,8 +252,6 @@ Access OCP URL
 > Add following lines to your /etc/hosts files on from where you plan to
 > access the Opensshift URL
 >
-> console-openshift-console.apps.. oauth-openshift.apps..
-
-\<HELPER\_HOST\_IP\>
-console-openshift-console.apps.\<base\_domain\_prefix\>.\<base\_domain\>
-oauth-openshift.apps.\<base\_domain\_prefix\>.\<base\_domain\>
+> \<HELPER\_HOST\_IP\>
+> console-openshift-console.apps.\<base\_domain\_prefix\>.\<base\_domain\>
+> oauth-openshift.apps.\<base\_domain\_prefix\>.\<base\_domain\>
