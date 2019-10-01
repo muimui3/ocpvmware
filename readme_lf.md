@@ -75,11 +75,11 @@ chmod +x /usr/local/bin/govc
 > ***HINT*** for Redhat server pip install command will fail. Need to execute the following commands
 
 ```
-sudo subscription-manager repos --enable rhel-server-rhscl-7-rpms
-sudo yum install python27-python-pip
-sudo scl enable python27 bash
-sudo which pip
-sudo pip -V
+subscription-manager repos --enable rhel-server-rhscl-7-rpms
+yum install python27-python-pip
+scl enable python27 bash
+which pip
+pip -V
 ```
 
 #### Download vCenter Server Appliance
