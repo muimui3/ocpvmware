@@ -1,5 +1,5 @@
-ocpvmware
-=========
+# ocpvmware
+
 
 For deploying OCP 4.1 a minimum recommendation is to provision 1 ESXi
 server and 1 Centos/Redhat VSI (Virtual Server Infrastructure) on the
@@ -23,27 +23,25 @@ hours and can be de-provisioned after the OCP deployment is completed.
 > provisioned the vCenter on the same portable IP subnet, thus a total
 > of 9 IP addresses are used.
 
-Architecture Diagram
---------------------
 
+## 	Architecture Diagram 
 coming soon!!!!!!!!!!!!!!!!!
 
-Hardware requirements
----------------------
+## Hardware requirements
 
-  Node Name         vCPU   Mem   HDD   Role
-  ----------------- ------ ----- ----- ------------------------------
-  Helper Node       4      16    150   DNS/Proxy/DHCP/OCP Installer
-  Bootstrap-0       4      16    150   Bootstrap OCP
-  Control-plane-0   4      16    150   Master OCP
-  Control-plane-1   4      16    150   Master OCP
-  Control-plane-2   4      16    150   Master OCP
-  compute-0         4      16    150   Compute OCP
-  compute-1         4      16    150   Compute OCP
-  compute-2         4      16    150   Compute OCP
+| Node Name       | vCPU   | Mem  | HDD | Role
+| ------          | ------ |----  | --- | ------ |
+| Helper Node | 4  | 16 | 150 | DNS/Proxy/DHCP/OCP Installer|
+| Bootstrap-0 | 4  | 16 | 150 | Bootstrap OCP |
+| Control-plane-0  |  4 | 16 | 150 | Master OCP |
+| Control-plane-1  |  4 | 16 | 150 | Master OCP |
+| Control-plane-2  |  4 | 16 | 150 | Master OCP |
+| compute-0 | 4 | 16 | 150 | Compute OCP |
+| compute-1 | 4 | 16 | 150 | Compute OCP |
+| compute-2 | 4 | 16 | 150 | Compute OCP |
 
-Prep the VIS System
--------------------
+
+## Prep the VIS System 
 
 -   Provision a VSI with 2 vCPUs, 10 GB of RAM, and 100 GB of storage
 
@@ -57,32 +55,32 @@ Prep the VIS System
 After the VSI is provisioned, logon to the VSI as root. To run ansible
 scripts, ansible rpm and python library need to be installed:
 
-    sudo yum update
-    sudo yum install ansible
-    sudo yum install genisoimage
-    sudo yum install git
-    sudo yum install python-pip gcc make openssl-devel python-devel
-    sudo pip install --upgrade ansible
+```
+sudo yum update
+sudo yum install ansible
+sudo yum install genisoimage
+sudo yum install git
+sudo yum install python-pip gcc make openssl-devel python-devel
+sudo pip install --upgrade ansible
+     If you get error msg: sudo: pip: command not found, execute the following commands to install pip:
+     sudo yum install epel-release
+     sudo yum install python-pip
+sudo pip install PyVmomi
+sudo yum install p7zip*
+sudo pip install jmespath
+curl -L https://github.com/vmware/govmomi/releases/download/v0.20.0/govc_linux_amd64.gz | gunzip > /usr/local/bin/govc
+chmod +x /usr/local/bin/govc
+```
 
+> ***HINT*** for Redhat server pip install command will fail. Need to execute the following commands
 
-    sudo pip install PyVmomi
-    sudo yum install p7zip*
-    sudo pip install jmespath
-    curl -L https://github.com/vmware/govmomi/releases/download/v0.20.0/govc_linux_amd64.gz | gunzip > /usr/local/bin/govc
-    chmod +x /usr/local/bin/govc
-
-> ***HINT*** for Redhat server pip install command will fail. Need to
-> execute the following commands
->
-> sudo subscription-manager repos --enable rhel-server-rhscl-7-rpms
->
-> sudo yum install python27-python-pip
->
-> sudo scl enable python27 bash
->
-> sudo which pip
->
-> sudo pip -V
+```
+sudo subscription-manager repos --enable rhel-server-rhscl-7-rpms
+sudo yum install python27-python-pip
+sudo scl enable python27 bash
+sudo which pip
+sudo pip -V
+```
 
 #### Download vCenter Server Appliance
 
