@@ -201,7 +201,7 @@ INFO Waiting up to 30m0s for bootstrapping to complete...
 DEBUG Bootstrap status: complete                   
 INFO It is now safe to remove the bootstrap resources
 ```
-...you can continue....at this point you can delete the bootstrap server.
+...you can continue...at this point you can delete the bootstrap server.
 
 ## Finish OCP Installation
 
@@ -212,7 +212,7 @@ cd /opt/ocp4
 export KUBECONFIG=/opt/ocp4/auth/kubeconfig
 ```
 
-Set up storage for you registry (to use PVs follow URL )
+Set up storage for you registry (to use PVs follow [URL](https://docs.openshift.com/container-platform/4.1/installing/installing_bare_metal/installing-bare-metal.html#registry-configuring-storage-baremetal_installing-bare-metal) )
 
 ```
 oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
