@@ -49,9 +49,7 @@ sudo yum install genisoimage
 sudo yum install git
 sudo yum install python-pip gcc make openssl-devel python-devel
 sudo pip install --upgrade ansible
-     If you get error msg: sudo: pip: command not found, execute the following commands to install pip:
-     sudo pip install PyVmomi
-     sudo yum install p7zip*
+sudo pip install PyVmomi
 sudo pip install jmespath
 curl -L https://github.com/vmware/govmomi/releases/download/v0.20.0/govc_linux_amd64.gz | gunzip > /usr/local/bin/govc
 chmod +x /usr/local/bin/govc
