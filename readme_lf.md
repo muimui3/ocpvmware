@@ -105,151 +105,143 @@ VMware reference document for instruction on creating a portgroup.
 
 Connect to the ESXi host via vSphere host client https://\<ESXI\_IP\>/ui
 
-Then on the left, just bellow the host, select the Manage \> System \>
-Time and Date
+Then on the left, just bellow the host, select the Manage > System > Time and Date
 
-Update the NTP Server with correct NTP Server address for example :
-129.6.15.28,129.6.15.28
+Update the NTP Server with correct NTP Server address for example:  129.6.15.28,129.6.15.28
 
-Then click the Edit Settings button to bring up the configuration
-window. Set the NTP service startup policy as "Start and stop with
-host". That selection means that every time the host reboot, the NTP
-service will be started automatically.
+Then click the Edit Settings button to bring up the configuration window. Set the NTP service startup policy as "Start and stop with host". That selection means that every time the host reboot, the NTP service will be started automatically.
 
 #### Download the Git repository
 
-    cd /opt
-    git clone https://github.com/fctoibm/ocpvmware.git
-    cd /opt/ocpvmware
+```
+cd /opt
+git clone https://github.com/fctoibm/ocpvmware.git
+cd /opt/ocpvmware
+```
 
-> \*\*\* HINT \*\*\* For Redhat you might have to update the ansible
-> path if playbook can not load python modules In ansible.cfg Under the
-> \[defaults\] interpreter\_python =
-> /opt/rh/python27/root/usr/bin/python
+> \*\*\* HINT \*\*\* For Redhat you might have to update the ansible path if playbook can not load python modules.
+> In ansible.cfg 
+> Under the [defaults] 
+> interpreter\_python = /opt/rh/python27/root/usr/bin/python
 
-Edit the [vars.yaml](./vars.yaml) file with the IP addresss that will be
-assigned to the masters/workers/boostrap. The IP addresses need to be
-correct since they will be used to create the OpenShift servers.
+Edit the [vars.yaml](./vars.yaml) file with the IP addresss that will be assigned to the masters/workers/boostrap. The IP addresses need to be correct since they will be used to create the OpenShift servers.
 
-Edit the [hosts](./hosts) file kvmguest section to match helper node
-information. This should be similar to the helpernode\_IP in the
-vars.yaml file.
+Edit the [hosts](./hosts) file kvmguest section to match helper node Information. This should be similar to the helpernode_IP in the vars.yaml file.
 
 Running the playbooks
 ---------------------
 
-Running playbook 1, 2 and 3 will deploy the entire stack from vCenter to
-OCP v4.1. If vCenter already exist, skip playbook one and continue with
-playbook two.
+Running playbook 1, 2 and 3 will deploy the entire stack from vCenter to OCP v4.1. If vCenter already exist, skip playbook one and continue with playbook two.
 
 ### Run the playbook One
 
 Run the following playbook to setup vCenter:
 
-    ansible-playbook -e @vars.yaml  play1.yaml
+```
+ansible-playbook -e @vars.yaml  play1.yaml
+```
 
-> **HINT** After play1.yaml is completed, wait 15-30 mins to let the
-> vCenter completes its deployment. Before proceeding to playbook 2,
-> verify that vCenter has completed deployment by visiting
-> https://\<vcenter\_ip\> and logon using the credential entered in the
-> vars.yaml file. The vCenter installation progress can be monitored by
-> opening a browser and entering the following URL
-> https://\<vCenter\_IP\>:5480
+> **HINT** After play1.yaml is completed, wait 15-30 mins to let the vCenter completes its deployment. Before proceeding to 
+> playbook 2, verify that vCenter has completed deployment by visiting https://<vcenter_ip> and logon using the credential  entered in the
+> vars.yaml file. The vCenter installation progress can be monitored by opening a browser and entering the following URL
+> https://<vCenter_IP\>:5480
 
 ### Run the playbook Two
 
 Run the playbook 2 to deploy helper node OS and the OCP4.1 VM's using
 terraform.
 
-    ansible-playbook -e @vars.yaml  play2.yaml
+```
+ ansible-playbook -e @vars.yaml  play2.yaml
+```
 
-> **HINT** End user will be prompted to press a key during Playbook 2
-> execution before the script continues. That is done so end-user can
-> verify that the helper node VM deployed successfully.
+> **HINT** End user will be prompted to press a key during Playbook 2 execution before the script continues. That is done so end-user can verify that the helper node VM deployed successfully.
 
 ### Run the playbook Three
 
-Playbook 3 will update the helper node to act as Load Balancer/ Dynamic
-Host Configuration Protocol / Preboot Execution Environment / Domain
-Name System (LB/DHCP/PEX/DNS). This playbook will also restart the OCP
-VM's
+Playbook 3 will update the helper node to act as Load Balancer/ Dynamic Host Configuration Protocol / Preboot Execution Environment / Domain Name System (LB/DHCP/PEX/DNS). This playbook will also restart the OCP VM's
 
-    ansible-playbook -e @vars.yaml  play3.yaml
+```
+ansible-playbook -e @vars.yaml  play3.yaml
+```
 
 ### Playbook fails for some reason
 
-If the ansible scripts fail, execute the following script to clean the
-environment.
+If the ansible scripts fail, execute the following script to clean the environment.
 
-    ansible-playbook -e @vars.yaml  clean_ocp_vms.yaml
+```
+ansible-playbook -e @vars.yaml  clean_ocp_vms.yaml
+```
 
-> **HINT** The above command will delete all the OCP related VM's.
-> Execute Play2 and Play3 playbooks to resume OCP installation.
+> **HINT** The above command will delete all the OCP related VM's. Execute Play2 and Play3 playbooks to resume OCP installation.
 
-    ansible-playbook -e @vars.yaml  clean_everything.yaml
+```
+ansible-playbook -e @vars.yaml  clean_everything.yaml
+```
 
-> **HINT** The above command will delete the vCenter and all the OCP
-> related VMs. Execute Play1, Play2 and Play3 playbook to resume OCP
-> installation.
+> **HINT** The above command will delete the vCenter and all the OCP related VMs. Execute Play1, Play2 and Play3 playbook to resume OCP installation.
 
-Wait for bootstrap VM to complete installation
-----------------------------------------------
+## Wait for bootstrap VM to complete installation
 
-The bootstrap VM actually does the install. To track the progress, ssh
-into helper node and execute the following commands:
+The bootstrap VM actually does the install. To track the progress, ssh into helper node and execute the following commands:
 
-    cd /opt/ocp4
-    openshift-install wait-for bootstrap-complete --log-level debug
+```
+cd /opt/ocp4
+openshift-install wait-for bootstrap-complete --log-level debug
+```
 
 Once you see this message below...
 
-    DEBUG OpenShift Installer v4.1.0-201905212232-dirty 
-    DEBUG Built from commit 71d8978039726046929729ad15302973e3da18ce 
-    INFO Waiting up to 30m0s for the Kubernetes API at https://api.ocp4.example.com:6443... 
-    INFO API v1.13.4+838b4fa up                       
-    INFO Waiting up to 30m0s for bootstrapping to complete... 
-    DEBUG Bootstrap status: complete                   
-    INFO It is now safe to remove the bootstrap resources
+```
+DEBUG OpenShift Installer v4.1.0-201905212232-dirty 
+DEBUG Built from commit 71d8978039726046929729ad15302973e3da18ce 
+INFO Waiting up to 30m0s for the Kubernetes API at https://api.ocp4.example.com:6443... 
+INFO API v1.13.4+838b4fa up                       
+INFO Waiting up to 30m0s for bootstrapping to complete... 
+DEBUG Bootstrap status: complete                   
+INFO It is now safe to remove the bootstrap resources
+```
+...you can continue....at this point you can delete the bootstrap server.
 
-...you can continue....at this point you can delete the bootstrap
-server.
-
-Finish OCP Installation
------------------------
+## Finish OCP Installation
 
 ssh into the helper node . Execute the following commands:
 
-    cd /opt/ocp4
-    export KUBECONFIG=/opt/ocp4/auth/kubeconfig
+```
+cd /opt/ocp4
+export KUBECONFIG=/opt/ocp4/auth/kubeconfig
+```
 
 Set up storage for you registry (to use PVs follow URL )
 
-    oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
+```
+oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"emptyDir":{}}}}'
+```
 
 If the registry need to be exposed, execute the following command
 
-    oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"defaultRoute":true}}'
+```
+oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"defaultRoute":true}}'
+```
 
 Finish up the install process. Execute the following command:
 
-    openshift-install wait-for install-complete 
+```
+openshift-install wait-for install-complete 
+```
 
-When messages similar to the following message are displayed, that means
-the installation is completed.
+When messages similar to the following message are displayed, that means the installation is completed.
 
-    INFO Waiting up to 30m0s for the cluster at https://api.test.os.fisc.lab:6443 to initialize... 
-    INFO Waiting up to 10m0s for the openshift-console route to be created... 
-    INFO Install complete!                            
-    INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/opt/ocp4/auth/kubeconfig' 
-    INFO Access the OpenShift web-console here: https://console-openshift-console.apps.test.os.fisc.lab 
-    INFO Login to the console with user: kubeadmin, password: ###-????-@@@@-**** 
+```
+INFO Waiting up to 30m0s for the cluster at https://api.test.os.fisc.lab:6443 to initialize... 
+INFO Waiting up to 10m0s for the openshift-console route to be created... 
+INFO Install complete!                            
+INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/opt/ocp4/auth/kubeconfig' 
+INFO Access the OpenShift web-console here: https://console-openshift-console.apps.test.os.fisc.lab 
+INFO Login to the console with user: kubeadmin, password: ###-????-@@@@-**** 
+```
 
-Access OCP URL
---------------
+## Access OCP URL
+> Add following lines to your /etc/hosts files on from where you plan to access the Opensshift URL
 
-> Add following lines to your /etc/hosts files on from where you plan to
-> access the Opensshift URL
->
-> \<HELPER\_HOST\_IP\>
-> console-openshift-console.apps.\<base\_domain\_prefix\>.\<base\_domain\>
-> oauth-openshift.apps.\<base\_domain\_prefix\>.\<base\_domain\>
+> <HELPER_HOST_IP> console-openshift-console.apps.<base_domain_prefix>.<base_domain>oauth-openshift.apps.<base_domain_prefix>.<base_domain>
